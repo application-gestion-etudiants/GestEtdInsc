@@ -1,0 +1,237 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Gestion des Étudiants, des Inscriptions",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/etudiants": {
+      "get": {
+        "summary": "Récupérer la liste des étudiants",
+        "responses": {
+          "200": {
+            "description": "Liste des étudiants récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Etudiant"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/etudiants/{id}": {
+      "get": {
+        "summary": "Récupérer un étudiant par ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de l'étudiant",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Étudiant récupéré avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Etudiant"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Étudiant non trouvé"
+          }
+        }
+      }
+    },
+    "/filiere/{filiereId}/etudiants": {
+      "get": {
+        "summary": "Récupérer la liste des étudiants inscrits dans une filière",
+        "parameters": [
+          {
+            "name": "filiereId",
+            "in": "path",
+            "description": "ID de la filière",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des étudiants inscrits récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Etudiant"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inscription": {
+      "post": {
+        "summary": "Inscrire un étudiant à une année académique",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InscriptionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Étudiant inscrit avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inscription"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inscription/{id}": {
+      "get": {
+        "summary": "Récupérer les détails d'une inscription",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de l'inscription",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails de l'inscription récupérés avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inscription"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Inscription non trouvée"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une inscription",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de l'inscription",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Inscription supprimée avec succès"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Etudiant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "prenom": {
+            "type": "string"
+          },
+          "date_de_naissance": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 1,
+          "nom": "Darvy",
+          "prenom": "Valtine",
+          "date_de_naissance": "28-10-2001"
+        }
+      },
+      "InscriptionRequest": {
+        "type": "object",
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "prenom": {
+            "type": "string"
+          },
+          "etudiant_id": {
+            "type": "integer"
+          },
+          "annee_academique_id": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "nom": "Darvy",
+          "prenom": "Valtine",
+          "etudiant_id": 1,
+          "annee_academique_id": 2023
+        }
+      },
+      "Inscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "etudiant_id": {
+            "type": "integer"
+          },
+          "annee_academique_id": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "id": 1,
+          "etudiant_id": 1,
+          "annee_academique_id": 2023
+        }
+      }
+    }
+  }
+}
